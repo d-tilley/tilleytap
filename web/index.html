@@ -18,81 +18,19 @@
 </head>
 <body ng-app="tilleyTap">
 
-  <div ng-controller="Randomizer" id="pattern">
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <canvas id="bgCanvas"></canvas>
-      <div class="container">
-        <div class="navbar-header">
-          <h1 id="logo" class="logoFont"><a href="http://www.tilleytap.com/">TIlleYtAp</a></h1>
-        </div>
-      </div>
-    </nav>
-  </div>
+  <div ng-include="'templates/header.html'"></div>
   
-  <div ng-controller="OnTap" id="content">
+  <div ng-controller="ttOnTap" id="content">
     <div ng-show="onTap">
       
-      <div class="col-xs-12 col-md-4"> 
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="panelHeader logoFont">Welcome...</div>
-          </div>
-          <div class="panel-body">
-            <p><span class="logoFont upsize">TIlleYtAp</span> is an integrated smart scale that measures the remaining content of a keg, handbuilt for use with my personal home kegerator. The data gathered from this scale is pushed to the cloud every 60 seconds, so you know not only what&#39;s on tap but also exactly how much is left. Stay connected to keep up to date with all of the local Indiana breweries that I have the pleasure of serving right from my home. Check out the additional links below which contain all of the details that make this site possible.</p>
-            <div class="col-xs-3"><a href="https://www.twitter.com/TilleyTap" target="_blank"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a></div>
-            <div class="col-xs-3"><a href="mailto:david@tilleytap.com"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a></div>
-            <div class="col-xs-3"><a href="http://www.tilleytap.com/about"><i class="fa fa-info-circle fa-2x" aria-hidden="true"></i></a></div>
-            <div class="col-xs-3"><a href="https://www.github.com/d-tilley/tilleytap" target="_blank"><i class="fa fa-github fa-2x" aria-hidden="true"></i></a></div>
-          </div>
-        </div>
-      </div>
+      <div ng-include="'templates/welcome.html'"></div>
       
-      <div class="col-xs-12 col-md-4">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="panelHeader logoFont">What&#39;s on tap...</div>
-          </div>
-          <div class="panel-body">
-            <h1 class="logoFont panelBodyHeader">{{onTap.beer.name}}</h1>
-            <p><span class="upsize"><b><a href="{{onTap.brewery.website}}" target="_blank">{{onTap.brewery.name}}</a></b></span></p>
-            <p><span class="upsize"><b>{{onTap.beer.style}}</b></span></p>
-            <p><span class="upsize"><b>{{onTap.beer.abv}}% ABV</b></span></p>
-            <p>{{onTap.beer.description}}</p>
-          </div>
-        </div>
-      </div>
+      <div ng-include="'templates/onTap.html'"></div>
       
-      <div class="col-xs-12 col-md-4"> 
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="panelHeader logoFont">How much is left...</div>
-          </div>
-          <div class="panel-body">
-            <p>There are currently <span class="upsize"><b>{{onTap.tap.weight}} ounces</b></span> remaining in this keg.</p>
-            <div id="pints" class="col-xs-12">
-              <img src="favicon.ico" ng-repeat="i in pints track by $index" />
-              <span class="upsize">
-                <b>
-                  <span ng-if="pints.length != 1">= {{pints.length}} pints</span>
-                  <span ng-if="pints.length == 1">= less than 1 pint</span>
-                </b>
-              </span>
-            </div>
-            <div class="col-xs-12">
-              <div element-load="drawGraph()" id="percent-circle"></div>
-            </div>
-            <p>A beer was last poured at <span class="upsize"><b>{{onTap.tap.lastPourTime}}</b></span> on <span class="upsize"><b>{{onTap.tap.lastPourDate}}</b></span>.</p>
-            <p>The keg scale was last measured at <span class="upsize"><b>{{onTap.tap.lastUpdateTime}}</b></span> on <span class="upsize"><b>{{onTap.tap.lastUpdateDate}}</b></span>.</p>
-          </div>
-        </div>
-      </div>
+      <div ng-include="'templates/remaining.html'"></div>
       
-      <div id="brewList" class="col-xs-12">
-        <p><span class="logoFont upsize">proud To hAve served...</span></p>
-        <div ng-repeat="i in onTap.breweries track by $index" class="float">
-          <a href="{{i.website}}" target="_blank"><img src="images/{{i.image}}" alt="{{i.name}}" /></a>
-        </div>
-      </div>
+      <div ng-include="'templates/breweries.html'"></div>
+    
     </div>
   </div>
   
