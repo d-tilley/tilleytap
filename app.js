@@ -24,10 +24,9 @@ app.get('/', function(req, res) {
 });
 
 app.get('/test', function(req, res) {
-    db.collection('test').find().toArray(function (err, docs) {
+    db.collection('test').find({}, function (err, result) {
         if (err) return console.log(err);
         
-        console.log('docs: ' + docs);
-        res(docs);
+        res.send(result);
     });
 });
