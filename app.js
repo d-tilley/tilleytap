@@ -10,6 +10,8 @@ var db;
 MongoClient.connect("mongodb://localhost:27017/tilleytap", function(err, database) {
     if (err) return console.log(err);
     
+    db = database;
+    
     app.listen(8080, function() {
       console.log('listening on 8080')
     });
@@ -22,7 +24,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/test', function(req, res) {
-    db.test.find().toArray(function (err, docs) {
+    db.collection('test').find().toArray(function (err, docs) {
         if (err) return console.log(err);
         
         console.log('docs: ' + docs);
