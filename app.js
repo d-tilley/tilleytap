@@ -27,6 +27,6 @@ app.get('/test', function(req, res) {
     db.collection('test').find({}, function (err, result) {
         if (err) return console.log(err);
         
-        res.send(result);
+        res.json(result);
     });
 });
