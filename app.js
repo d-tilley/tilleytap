@@ -22,7 +22,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/test', function(req, res) {
-    db.collection('test').find().toArray(function (err, docs) {
+    db.test.find().toArray(function (err, docs) {
         if (err) return console.log(err);
         
         console.log('docs: ' + docs);
