@@ -24,7 +24,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/test', function(req, res) {
-    db.collection('test').find({}, function (err, result) {
+    db.collection('test').find().toArray(function (err, result) {
         if (err) return console.log(err);
         
         res.json(result);
