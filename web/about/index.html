@@ -1,0 +1,60 @@
+<html>
+<head>
+  <title>TilleyTap - The IoT smart scale for homebrewers</title>
+	
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+  <link href="../css/tilleytap.css" rel="stylesheet" type="text/css" />
+  <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css" >
+  <link href="../css/jquery.circliful.css" rel="stylesheet" type="text/css" />
+
+  <script src="../js/jquery-1.12.4.min.js"></script> 
+  <script src="../js/angular.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/patternizer.js"></script>
+  <script src="../js/jquery.circliful.js"></script>
+</head>
+<body ng-app="tilleyTap">
+  <div ng-include="'../templates/header.html'"></div>
+  
+  <div class="container">
+      <h1 class="logoFont">TilleYtAp : the internet-of-things home kegerator scale</h1>
+      <div id="infoContent">
+      <h1>Overview</h1>
+      <p><span class="logoFont upsize">TilleYtAp</span> is a hacked together beer keg scale that will take periodic weight measurements of the remaining content within the keg. These measurements are then uploaded to a database where this information can be accessed from the web. At its core, <span class="logoFont upsize">TilleYtAp</span> is comprised of 4 load cells, a combinator board, an amplifier, an Arduino microcontroller, a Raspberry Pi single board computer, and a hosted website for letting the world know what&#39;s currently on tap at my house and how much is left.</p>
+      
+      <div class="col-xs-12"><a href="../images/scale.jpg" target="_blank"><img id="scaleImg" src="../images/scale.jpg" align="center" width="100%" /></a></div>
+      
+        <h1>Hardware</h1>
+        
+        <h3>Load cells</h3>
+        <p>The 4 load cells were obtained from an inexpensive digital bathroom scale from Fry&#39;s Electronics for about $10. Other than price, my only other consideration was to ensure that I had easy access to load cell wires. As you can see from the image above, all that was needed to access the load cells was a Phillips screwdriver.</p>
+
+<h3>Combinator board</h3>
+<p>Once the load cells had been accessed and disconnected from the scale display, I was left with 12 wires just hanging out together. <a href="https://www.sparkfun.com/" target="_blank">SparkFun</a> provides a <a href="https://www.sparkfun.com/products/13878" target="_blank">Load Sensor Combinator</a> board  to combine these four individual loads cells into one single output. With a little bit of soldering, this board combines the 12 wires of the bathroom scale into a single electrical circuit that can be used to measure electrical resistance (aka a Wheatstone bridge).</p>
+
+<h3>HX711 amplifier</h3>
+<p>In its current state the electrical resistance being measured in the load cells is extremely small. In order to accurately read the electrical resistance, the signal from the load cell combinator needs to be amplified. Again, SparkFun has provided a solution here with their <a href="https://www.sparkfun.com/products/13879" target="_blank">HX711 Load Cell Amplifier</a>. This amplifier will be the bridge between our load cells and our microcontroller.</p>
+        <h1>Reading the scale</h1>
+        <h3>Arduino</h3>
+        <p>To make the round trip of mearsuring the resistance in our load cells, the HX711 amplifier is hooked up to an <a href="https://www.arduino.cc/en/Main/ArduinoBoardUno" target="_blank">Arduino Uno</a> microcontroller. We simply need to connect the power, ground, data, and clock GPIO pins from the HX711 to the Arduino. From here it was just a matter of hooking up the Arduino to a computer, installing the <a href="https://www.arduino.cc/en/main/software" target="_blank">Arduino IDE</a>, and then begin coding. SparkFun also provides some fantastic resources with their <a href="https://learn.sparkfun.com/tutorials/load-cell-amplifier-hx711-breakout-hookup-guide" target="_blank">HX711 Hookup Guide</a>. Not only have they provided the necessary instructions for hooking up the hardware, they have also provided source code to calibrate and output readings of our scale. Once properly calibrated, scale readings can be taken at regular intervals here.</p>
+
+<h3>Raspberry Pi</h3>
+<p>My <a href="https://www.raspberrypi.org/products/raspberry-pi-2-model-b/" target="_blank">Raspberry Pi 2 Model B</a> actually serves a few purposes for this project: coding the Arduino, reading the serial output of the Arduino, and uploading the scale measurement readings.</p>
+
+<p>To make the jump from a local scale reading to a full-fledged IoT project, I needed to access a web network and upload the scale measurment reading. Since I already had the Raspberry Pi on hand which came with a WiFi USB dongle, I decided to keep the Arduino connected to the Raspberry Pi via USB. A python script was put together to read the serial output from the Arduino and then make a PHP REST call to upload the current scale weight to a hosted database. A cron job on the Raspberry Pi executes the python script every 60 seconds.</p>
+
+<p>There are other options for connecting the Arduino to a WiFi network, such as a WiFi Shield. I&#39;ll be exploring these options when my Pi is needed again for future projects.</p>
+        <h1>Displaying the data</h1>
+        <p>Now that the keg scale is uploading information to an externally hosted database, a website can be put together to display this information to the world. <span class="logoFont upsize">TilleYtAp</span> is built upon a <a href="https://www.mysql.com/" target="_blank">MySql</a> database with <a href="http://php.net/" target="_blank">PHP</a> scripts used to get and set information from this database. The front-end is built upon the <a href="https://angularjs.org/" target="_blank">AngularJS</a> framework and utilizes <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> components. Javascript libraries from <a href="https://github.com/matthewlein/patternizer.js" target="_blank">Patternizer</a> and <a href="https://github.com/pguso/jquery-plugin-circliful" target="_blank">Circliful</a> have also been tweaked and incorporated. Check out my <a href="https://github.com/d-tilley/tilleytap" target="_blank">GitHub</a> repository for the full codebase.</p>
+
+<p>And thats how the cookie crumbles.</p>
+</div>
+
+  </div>
+  
+  <script src="../js/tilleytap.js"></script>
+</body>
+</html>
